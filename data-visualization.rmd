@@ -93,3 +93,30 @@ ggplot(
     ) +
     scale_color_colorblind() 
 ```
+
+
+
+# Exercise 
+
+1. How many rows are in penguins? How many columns?
+```{r}
+nrow(penguins)
+ncol(penguins)
+```
+
+2. What does the bill_depth_mm variable in the penguins data frame describe?
+
+a number denoting bill depth (millimeters)
+
+3. Make a scatterplot of bill_depth_mm vs. bill_length_mm. That is, make a scatterplot with bill_depth_mm on the y-axis and bill_length_mm on the x-axis. Describe the relationship between these two variables.
+
+```{r}
+ggplot(
+    data = penguins,
+    mapping = aes(
+        y = bill_depth_mm,
+        x = bill_length_mm
+    )
+) +
+    geom_point(mapping = aes(color = year, shape = species)) 
+```
