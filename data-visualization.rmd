@@ -1,0 +1,95 @@
+---
+title: "Data Visualization"
+output: html_document
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+```
+
+
+
+```{r, include=FALSE}
+ggplot(
+  data = penguins, mapping =
+    aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point()
+```
+
+# Adding aesthetics and layers
+
+Basically making the species to be represented by different colors to help make better sense of the data.
+```{r, include=FALSE}
+ggplot(
+  data = penguins, mapping =
+    aes(x = flipper_length_mm, y = body_mass_g, color = species)
+) +
+  geom_point()
+```
+
+# Adding a layer line
+
+Adding lines to the graph to help make better sense of the data.
+Since this is a new geometric object representing our data, we will add a new geom as a layer on top of our point geom: geom_smooth(). And we will specify that we want to draw the line of best fit based on a linear model with method = "lm".
+
+```{r, include=FALSE}
+ggplot(
+  data = penguins, mapping =
+    aes(x = flipper_length_mm, y = body_mass_g, color = species)
+) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+# Merging the lines
+
+We have successfully added lines, but this plot doesn’t look like the plot from Section 1.2.2, which only has one line for the entire dataset as opposed to separate lines for each of the penguin species.
+
+When aesthetic mappings are defined in ggplot(), at the global level, they’re passed down to each of the subsequent geom layers of the plot. However, each geom function in ggplot2 can also take a mapping argument, which allows for aesthetic mappings at the local level that are added to those inherited from the global level. Since we want points to be colored based on species but don’t want the lines to be separated out for them, we should specify color = species for geom_point() only.
+
+```{r, include=FALSE}
+ggplot(
+    data = penguins, mapping =
+        aes(x = flipper_length_mm, y = body_mass_g)
+) +
+    geom_point(mapping = aes(color = species)) +
+    geom_smooth(method = "lm")
+```
+
+# Adding shapes to the species
+Voila! We have something that looks very much like our ultimate goal, though it’s not yet perfect. We still need to use different shapes for each species of penguins and improve labels.
+
+It’s generally not a good idea to represent information using only colors on a plot, as people perceive colors differently due to color blindness or other color vision differences. Therefore, in addition to color, we can also map species to the shape aesthetic.
+
+```{r, include=FALSE}
+ggplot(
+    data = penguins, mapping =
+        aes(x = flipper_length_mm, y = body_mass_g)
+) +
+    geom_point(mapping = aes(color = species, shape = species)) +
+    geom_smooth(method = "lm")
+```
+
+# Improving the labels using labs()
+And finally, we can improve the labels of our plot using the labs() function in a new layer. Some of the arguments to labs() might be self explanatory: title adds a title and subtitle adds a subtitle to the plot. Other arguments match the aesthetic mappings, x is the x-axis label, y is the y-axis label, and color and shape define the label for the legend. In addition, we can improve the color palette to be colorblind safe with the scale_color_colorblind() function from the ggthemes package.
+
+```{r, include=FALSE}
+ggplot(
+  data = penguins, mapping =
+    aes(x = flipper_length_mm, y = body_mass_g)
+) +
+  geom_point(mapping = aes(color = species, shape = species)) +
+    geom_smooth(method = "lm") +
+    labs(
+        title = "Penguin body mass vs. flipper length",
+        subtitle = "Data from the palmerpenguins package",
+        x = "Flipper length (mm)",
+        y = "Body mass (g)",
+        color = "Species",
+        shape = "Species"
+    ) +
+    scale_color_colorblind() 
+```
