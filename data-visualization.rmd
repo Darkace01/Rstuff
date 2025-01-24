@@ -120,3 +120,32 @@ ggplot(
 ) +
     geom_point(mapping = aes(color = year, shape = species)) 
 ```
+
+4. What happens if you make a scatterplot of species vs. bill_depth_mm? What might be a better choice of geom?
+
+```{r}
+ggplot(
+    data = penguins,
+    mapping = aes(
+        y = bill_depth_mm,
+        x = species
+    )
+) +
+    geom_hex()
+```
+
+We have 3 straight lines, which is not what we want. We can use geom_hex() instead.
+
+5. Why does the following give an error and how would you fix it?
+
+```{r}
+ggplot(data = penguins) +
+    geom_point()
+```
+
+The error is because we need to specify the mapping argument for the x and y axis. We can fix it by adding the mapping argument to geom_point().
+
+```{r}
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = bill_depth_mm)) +
+    geom_point()
+```
